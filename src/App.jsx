@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import Login from "./Components/Authentication/Login";
 import Register from "./Components/Authentication/Register";
+import RequireAuth from "./Components/Authentication/RequireAuth";
 import Header from "./Components/Header/Header";
 import Home from "./Components/Home/Home";
 import AddActivities from "./Components/Management/AddActivities";
@@ -44,9 +45,18 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/manage" element={<Manage />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/addActivities" element={<AddActivities />} />
+                <Route path="/manage" element={
+                    <RequireAuth>
+                        <Manage />
+                    </RequireAuth>} />
+                <Route path="/profile" element={
+                    <RequireAuth>
+                        <Profile />
+                    </RequireAuth>} />
+                <Route path="/addActivities" element={
+                    <RequireAuth>
+                        <AddActivities />
+                    </RequireAuth>} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
             </Routes>

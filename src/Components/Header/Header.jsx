@@ -1,5 +1,11 @@
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
+import auth from "../../firebase.init";
 export default function Header() {
+    const [user] = useAuthState(auth);
+    const handleLogout = () => {
+        auth.signOut();
+    }
     return (
         <div>
             <div class="navbar bg-base-100">
@@ -19,24 +25,26 @@ export default function Header() {
 
                 </div>
                 <div class="navbar-end">
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                            <div class="w-10 rounded-full">
-                                <img src="https://api.lorem.space/image/face?hash=33791" />
-                            </div>
-                        </label>
-                        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
-                                <Link to="/profile" class="justify-between">
-                                    Profile
-                                    <span class="badge">New</span>
-                                </Link>
-                            </li>
-                            <li><Link to="/manage">Manage</Link></li>
-                            <li><Link to="/addActivities">Add Activities</Link></li>
-                            <li><button>Logout</button></li>
-                        </ul>
-                    </div>
+                    {
+                        user?.email ? (<div class="dropdown dropdown-end">
+                            <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                                <div class="w-10 rounded-full">
+                                    <img src={user?.photoURL} alt={user.displayName} />
+                                </div>
+                            </label>
+                            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                                <li>
+                                    <Link to="/profile" class="justify-between">
+                                        Profile
+                                        <span class="badge">New</span>
+                                    </Link>
+                                </li>
+                                <li><Link to="/manage">Manage</Link></li>
+                                <li><Link to="/addActivities">Add Activities</Link></li>
+                                <li><button onClick={handleLogout} >Logout</button></li>
+                            </ul>
+                        </div>) : <ul> <li><Link to="/login">Login</Link></li></ul>
+                    }
                 </div>
             </div>
         </div>
