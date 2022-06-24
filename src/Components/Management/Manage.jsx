@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import Swal from "sweetalert2";
 export default function Manage() {
   const [activities, setActivities] = useState([])
@@ -23,7 +24,7 @@ export default function Manage() {
       if (result.isConfirmed) {
         axios.delete(`http://localhost:5500/api/activities/${_id}`)
         .then((data) => {
-          data.status === 200 ? Swal.fire("Deleted!", "Your file has been deleted.", "success") : Swal.fire("Error", "Product not deleted", "error");
+          data.status === 200 ? toast.success("Delete Successful") : toast.warning("Activity not deleted");
           setActivities(activities.filter(activity => activity._id !== _id))
         });
       }
