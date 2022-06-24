@@ -1,7 +1,20 @@
+import axios from 'axios';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import auth from '../../firebase.init';
 export default function AddActivities() {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
+  const [user] = useAuthState(auth);
+  const { register, handleSubmit,reset } = useForm();
+  const onSubmit = data => {
+    axios.post('http://localhost:5500/api/activities', data)
+      .then(res => {
+        if(res.status === 200) {
+          toast.success('Activity added successfully');
+        }
+        reset();
+      });
+  }
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 container mx-auto">
       <div className="m-5 w-full">
@@ -9,19 +22,19 @@ export default function AddActivities() {
           <div class="form-control p-5">
             <label class="input-group input-group-vertical">
               <span>Email</span>
-              <input type="email" placeholder="info@email.com" {...register("email", {})} />
+              <input type="email" value={user.email} {...register("email", {})} />
             </label>
           </div>
           <div class="form-control p-5">
             <label class="input-group input-group-vertical">
               <span>Title</span>
-              <input type="text" placeholder="Title" {...register("title", { min: 2 })} />
+              <input type="text" required placeholder="Title" {...register("title", { min: 2 })} />
             </label>
           </div>
           <div class="form-control p-5">
             <label class="input-group input-group-vertical">
               <span>Image</span>
-              <input type="text" placeholder="Image URL" {...register("img", { min: 2 })} />
+              <input type="url" required placeholder="Image URL" {...register("img", { min: 2 })} />
             </label>
           </div>
           <button type="submit" className='btn btn-primary m-4 p-5'>Submit</button>
