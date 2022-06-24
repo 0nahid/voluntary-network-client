@@ -8,14 +8,13 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname || "/manage";
-  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-  console.log(user);
+  const [signInWithGoogle, user, loading] = useSignInWithGoogle(auth);
   if (user) {
     navigate(from, { replace: true });
   }
-  if (loading) {
-    <Loading />
-  }
+  // if (loading) {
+  //   <Loading />
+  // }
   return (
     <div className="flex h-screen justify-center items-center px-4 lg:px-12">
       <div className="card w-full max-w-md bg-base-100">
