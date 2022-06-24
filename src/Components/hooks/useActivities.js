@@ -5,7 +5,7 @@ const useActivities = () => {
     const [activities, setActivities] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5500/api/activities')
+        axios.get('https://gentle-escarpment-02444.herokuapp.com/api/activities')
             .then(data => setActivities(data.data));
     }, []);
     return [activities, setActivities]

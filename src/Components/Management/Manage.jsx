@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 export default function Manage() {
   const [activities, setActivities] = useState([])
   useEffect(() => {
-    axios(`http://localhost:5500/api/activities`)
+    axios(`https://gentle-escarpment-02444.herokuapp.com/api/activities`)
       .then(res => setActivities(res.data))
   }, [])
 
@@ -22,7 +22,7 @@ export default function Manage() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:5500/api/activities/${_id}`)
+        axios.delete(`https://gentle-escarpment-02444.herokuapp.com/api/activities/${_id}`)
           .then((data) => {
             data.status === 200 ? toast.success("Delete Successful") : toast.warning("Activity not deleted");
             setActivities(activities.filter(activity => activity._id !== _id))

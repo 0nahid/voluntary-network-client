@@ -7,7 +7,7 @@ export default function AddActivities() {
   const [user] = useAuthState(auth);
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = data => {
-    axios.post('http://localhost:5500/api/activities', data)
+    axios.post('https://gentle-escarpment-02444.herokuapp.com/api/activities', data)
       .then(res => {
         if (res.status === 200) {
           toast.success('Activity added successfully');
