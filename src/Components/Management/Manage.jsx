@@ -23,18 +23,18 @@ export default function Manage() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios.delete(`http://localhost:5500/api/activities/${_id}`)
-        .then((data) => {
-          data.status === 200 ? toast.success("Delete Successful") : toast.warning("Activity not deleted");
-          setActivities(activities.filter(activity => activity._id !== _id))
-        });
+          .then((data) => {
+            data.status === 200 ? toast.success("Delete Successful") : toast.warning("Activity not deleted");
+            setActivities(activities.filter(activity => activity._id !== _id))
+          });
       }
     });
   };
 
   return (
     <div>
-      <div class="overflow-x-auto container mx-auto">
-        <table class="table w-full">
+      <div className="overflow-x-auto container mx-auto">
+        <table className="table w-full">
           <thead>
             <tr>
               <th>Title</th>
