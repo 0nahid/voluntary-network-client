@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Loading from '../Loader/Loader';
-
+import Swal from "sweetalert2";
 export default function Manage() {
-  const [loading, setLoading] = useState(false);
   const [activities, setActivities] = useState([])
   useEffect(() => {
     axios(`http://localhost:5500/api/activities`)
@@ -11,19 +9,30 @@ export default function Manage() {
   }, [])
 
   // delete activity
-  const deleteActivity = (id) => {
-    const url = `http://localhost:5500/api/activities/${id}`;
-    axios.delete(url)
-      .then(res => {
-        setActivities(activities.filter(activity => activity.id !== id))
+  const deleteActivity = (_id) => {
+    // add user confirmation for delete
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`http://localhost:5500/api/activities/${_id}`)
+        .then((data) => {
+          data.status === 200 ? Swal.fire("Deleted!", "Your file has been deleted.", "success") : Swal.fire("Error", "Product not deleted", "error");
+          setActivities(activities.filter(activity => activity._id !== _id))
+        });
       }
-      );
-  }
-
+    });
+  };
 
   return (
     <div>
-      {loading ? <Loading /> : (<div class="overflow-x-auto container mx-auto">
+      <div class="overflow-x-auto container mx-auto">
         <table class="table w-full">
           <thead>
             <tr>
@@ -42,7 +51,7 @@ export default function Manage() {
                     <td>
                       <button className="btn btn-primary mr-2">Edit</button>
                       <button
-                        onClick={() => deleteActivity(activity.id)}
+                        onClick={() => deleteActivity(activity._id)}
                         className="btn btn-danger">Delete</button>
                     </td>
                   </tr>
@@ -51,7 +60,7 @@ export default function Manage() {
             }
           </tbody>
         </table>
-      </div>)}
+      </div>)
     </div>
   )
 }
